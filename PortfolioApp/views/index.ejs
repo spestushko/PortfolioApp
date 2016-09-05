@@ -24,11 +24,14 @@
   <!-- Including services to be loaded -->
   <script src="components/home/homeController.js"></script>
   <script src="components/login/loginController.js"></script>
+  <script src="components/signup/signupController.js"></script>
+  <script src="components/contact/contactController.js"></script>
 
   <!-- Bootstrap core CSS
   ================================================== -->
   <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet">
-  <link href="stylesheets/css/angularCarousel.css" rel="stylesheet">
+  <link href="stylesheets/css/loginTemplate.css" rel="stylesheet">
+  <link href="stylesheets/css/contactTemplate.css" rel="stylesheet">
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <link href="stylesheets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
   <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -70,16 +73,17 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#/">Home</a></li>
               <li><a href="#login">Sign in</a></li>
-              <li><a href="#register">Sign up</a></li>
+              <li><a href="#signup">Sign up</a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="#about">About</a></li>
                   <li><a href="#contact">Contact</a></li>
                   <li role="separator" class="divider"></li>
+                  <!--
                   <li class="dropdown-header">Nav header</li>
+                  -->
                 </ul>
               </li>
             </ul>
@@ -97,7 +101,6 @@
 </body>
 
 <footer>
-  <p class="pull-right"><a href="#">Back to top</a></p>
   <p>&copy; 2016 PortfolioApp Inc. &middot; <a href="#privacy">Privacy</a> &middot; <a href="#terms">Terms</a></p>
 </footer>
 

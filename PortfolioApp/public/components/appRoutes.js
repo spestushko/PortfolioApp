@@ -9,15 +9,19 @@ route.config(function ($routeProvider, $locationProvider) {
       templateUrl: 'components/login/loginTemplate.html',
       controller: 'loginController',
     })
+    .when('/signup', {
+      templateUrl: 'components/signup/signupTemplate.html',
+      controller: 'signupController',
+    })
     /*
     .when('/about', {
       templateUrl: 'components/about/aboutTemplate.html',
       controller: 'aboutController',
     })
+    */
     .when('/contact', {
       templateUrl: 'components/contact/contactTemplate.html',
       controller: 'contactController',
     })
-    */
     .otherwise({ redirectTo: '/' });
 });
