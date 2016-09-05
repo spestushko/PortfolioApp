@@ -19,5 +19,5 @@ route.config(function ($routeProvider, $locationProvider) {
       controller: 'contactController',
     })
     */
-    //.otherwise({ redirectTo: '/' });
+    .otherwise({ redirectTo: '/' });
 });
