@@ -11,32 +11,37 @@ var passport = require('passport');
 
 // Initizlize mongoose and it's schemas
 // ============================================================= 
+const fileName = 'app.js';
+const functionName = 'Main'
+
+// Initizlize utilities used by application
+// ============================================================= 
+var log = require('./util/logger/logger');
+if (log) log.out('info', fileName, functionName, 'Logger module is loaded');
+else log.out('error', fileName, functionName, 'Error loading logger module');
+
+// Initizlize mongoose and it's schemas
+// ============================================================= 
 require('./models/users.js');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1/PortfolioApp');
 var dbConn = mongoose.connection;
 dbConn.on('error', console.error.bind(console, 'connection error:'));
 dbConn.once('open', function(callback){
-  console.log('=== connection to mongodb established ===');
+  log.out('info', fileName, functionName, 'Connection to mongodb established');
 });
 
-// Initizlize utilities used by application
-// ============================================================= 
-var logger = require('util/logger/logger');
-if (typeof logger == 'undefined') console.log('Logger module is loaded');
-else console.log('Error loading logger module');
-
 // Initizlize backend routes for the application
-// ============================================================= 
+// ======================================= ====================== 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/api/auth/auth')(passport);
-if (routes) console.log('[app.js] - routes - Route initialized');
-else console.log('[app.js] - routes - Route NOT initialized');
-if (users) console.log('[app.js] - users - Route initialized');
-else console.log('[app.js] - users - Route NOT initialized');
-if (auth) console.log('[app.js] - auth - Route initialized');
-else console.log('[app.js] - auth - Route NOT initialized');
+if (routes) log.out('info', fileName, functionName, 'routes - Route initialized');
+else log.out('error', fileName, functionName, 'routes - Route NOT initialized');
+if (users) log.out('info', fileName, functionName, 'users - Route initialized');
+else log.out('error', fileName, functionName, 'users - Route NOT initialized');
+if (auth) log.out('info', fileName, functionName, 'auth - Route initialized');
+else log.out('error', fileName, functionName, 'auth - Route NOT initialized');
 
 // Initialize the express application
 // ============================================================= 

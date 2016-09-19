@@ -15,13 +15,15 @@ module.exports = function (passport) {
 
   // Passport needs to be able to serialize and deserialize users to support persistent login sessions
   passport.serializeUser(function (user, done) {
-    console.log('serializing user:', user.public.email);
+    const functionName = 'passport.serializeUser';
+    log.out('info', fileName, functionName, 'serializing user:' + user.public.email);
     done(null, user._id);
   });
 
   passport.deserializeUser(function (id, done) {
     User.findById(id, function (err, user) {
-      console.log('deserializing user:', user.public.email);
+      const functionName = 'passport.deserializeUser';
+      log.out('info', fileName, functionName, 'deserializing user:' + user.public.email);
       done(err, user);
     });
   });
@@ -49,14 +51,15 @@ module.exports = function (passport) {
 
   passport.use('signup', new LocalStrategy({
     passReqToCallback: true,},function (req, username, password, done) {
-    const functionName = 'signup'; 
+    const functionName = 'passport.signup'; 
+    log.out('info', fileName, functionName, 'function call init');
     var promise = User.findOne({ profile: { email:  username }}).exec();
     promise.then(function(newUser) {
       if (!newUser) {
-        logger.log('info', fileName, functionName, 'User already exists!');
+        log.out('warn', fileName, functionName, 'User already exists!');
         return done(null, false);
       } 
-      logger.log('info', fileName, functionname, 'newUser data:{' + newUser + '}');
+      log.out('info', fileName, functionname, 'newUser data:{' + newUser + '}');
       // set the user's local credentials
       newUser.public.email = username;
       newUser.private.password = createHash(password);
@@ -64,12 +67,12 @@ module.exports = function (passport) {
       return newUser.save();
     })
     .then(function(newUser){
-      logger.log('info', fileName, functionname, 'NEW username:' + newUser.public.email);
-      logger.log('info', fileName, functionname, 'NEW role:' + newUser.private.role);
+      log.out('info', fileName, functionname, 'NEW username:' + newUser.public.email);
+      log.out('info', fileName, functionname, 'NEW role:' + newUser.private.role);
       return done(null, newUser);
     })
     .catch(function(err){
-      logger.log('error', fileName, functionname, err);
+      log.out('error', fileName, functionname, err);
       return done(err);
     });
   }));

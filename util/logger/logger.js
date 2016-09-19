@@ -1,5 +1,4 @@
-var logger = module.exports;
-logger.debugLevel = 'warn';
+var debugLevel = 'warn';
 
 /** 
 * Get current time when someone is writing to the log
@@ -26,16 +25,15 @@ var currentTime = function(){
     var second = '0'+second; 
   var dateTime = year+'/'+month+'/'+day+' '+hour+':'+minute+':'+second;   
   return dateTime;
-};
+};  
 
-logger.log = function(level, file , functionName, message) {
-var levels = ['error', 'warn', 'info'];
-var timeOfError = 
-  if (levels.indexOf(level) >= levels.indexOf(logger.debugLevel) ) {
+exports.out = function(level, file , functionName, message) {
+  var levels = ['error', 'warn', 'info'];
+  if (levels.indexOf(level) >= levels.indexOf(debugLevel) ) {
     if (typeof message !== 'string') {
-      message = JSON.stringify(message);
-    };
-  	console.log(currentTime + ' ['+level+'] - ' + '[' + file + '] - ' + '[' + 
-  							functionName + ']' + ' : ' + message);
-	}
+    message = JSON.stringify(message);
+  };
+	console.log(currentTime() + ': ['+level+'] - ' + '[' + file + '] - ' + '[' + 
+							functionName + ']' + ' : ' + message);
+  }
 }
