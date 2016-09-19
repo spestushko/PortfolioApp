@@ -53,13 +53,14 @@ module.exports = function (passport) {
     passReqToCallback: true,},function (req, username, password, done) {
     const functionName = 'passport.signup'; 
     log.out('info', fileName, functionName, 'function call init');
-    var promise = User.findOne({ profile: { email:  username }}).exec();
-    promise.then(function(newUser) {
+    User.findOne({ profile: { email:  username }}).exec()
+    .then(function(newUser) {
+      log.out('info', fileName, functionName, 'Query returned a promise');
       if (!newUser) {
-        log.out('warn', fileName, functionName, 'User already exists!');
+        log.out('warn', fileName, functionName, 'User already exists: '+newUser.email);
         return done(null, false);
       } 
-      log.out('info', fileName, functionname, 'newUser data:{' + newUser + '}');
+      log.out('info', fileName, functionname, 'Creating new user');
       // set the user's local credentials
       newUser.public.email = username;
       newUser.private.password = createHash(password);

@@ -16,7 +16,7 @@ const functionName = 'Main'
 
 // Initizlize utilities used by application
 // ============================================================= 
-var log = require('./util/logger/logger');
+log = require('./util/logger/logger');
 if (log) log.out('info', fileName, functionName, 'Logger module is loaded');
 else log.out('error', fileName, functionName, 'Error loading logger module');
 
@@ -38,9 +38,9 @@ var users = require('./routes/users');
 var auth = require('./routes/api/auth/auth')(passport);
 if (routes) log.out('info', fileName, functionName, 'routes - Route initialized');
 else log.out('error', fileName, functionName, 'routes - Route NOT initialized');
-if (users) log.out('info', fileName, functionName, 'users - Route initialized');
+if (users) log.out('info', fileName, functionName,  'users  - Route initialized');
 else log.out('error', fileName, functionName, 'users - Route NOT initialized');
-if (auth) log.out('info', fileName, functionName, 'auth - Route initialized');
+if (auth) log.out('info', fileName, functionName,   'auth   - Route initialized');
 else log.out('error', fileName, functionName, 'auth - Route NOT initialized');
 
 // Initialize the express application
