@@ -1,18 +1,11 @@
 <div id="fullscreen_bg" class="fullscreen_bg"/>
 <div class="container">
-  <form class="form-signin">
-		<h1 class="form-signin-heading text-muted">Sign Up</h1>
-		<input type="text" class="form-control" placeholder="Email address" required="" autofocus="">
-		<input type="text" class="form-control" placeholder="Company name" required="" autofocus="">
-		<div class="form-group">
-  		<select class="form-control" id="sel1">
-    		<option>Company</option>
-    		<option>Freelancer</option>
-      </select>
-		</div>
-		<input type="password" class="form-control" placeholder="Password" required="">
-		<input type="password" class="form-control" placeholder="Confirm Password" required="">
-		<button class="btn btn-lg btn-primary btn-block" type="submit">
+  <form class="form-signin" ng-submit="submit()">
+		<h1 class="form-signin-heading text-muted	">Sign Up</h1>
+		<input ng-model="user.username" type="text" class="form-control" placeholder="Email address" required="" autofocus="true">
+		<input ng-model="user.password" type="password" class="form-control" placeholder="Password" required="">
+		<input ng-model="test_user.repassword" type="password" class="form-control" placeholder="Confirm Password" required="">
+		<button class="btn btn-lg btn-primary btn-block" ng-click="signup()">
 			Sign Up
 		</button>
 	</form>

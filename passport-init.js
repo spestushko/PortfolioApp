@@ -1,7 +1,15 @@
 var mongoose = require('mongoose');
+// set Promise provider to bluebird
+mongoose.Promise = require('bluebird');
+// q
+mongoose.Promise = require('q').Promise;
+// native promises
+mongoose.Promise = global.Promise;
+
 var User = mongoose.model('User');
 var LocalStrategy = require('passport-local').Strategy;
 var bCrypt = require('bcrypt-nodejs');
+const fileName = 'passport-init.js';
 
 module.exports = function (passport) {
 
@@ -18,65 +26,53 @@ module.exports = function (passport) {
     });
   });
 
-  passport.use('signin', new LocalStrategy({
-    passReqToCallback: true,
-  },
-    function (req, username, password, done) {
-      // check in mongo if a user with username exists or not
-      User.findOne({ public: { email:  username } }, function (err, user) {
-        // In case of any error, return using the done method
-        if (err) return done(err);
-        // Username does not exist, log the error and redirect back
-        if (!user) {
-          console.log('User Not Found with username ' + username);
-          return done(null, false);
-        }
-        // User exists but wrong password, log the error
-        if (!isValidPassword(user, password)) {
-          console.log('Invalid Password');
-          return done(null, false); // redirect back to login page
-        }
-        // User and password both match, return user from done method
-        // which will be treated like success
-        return done(null, user);
-      });
-    }
-  ));
+  passport.use('signin', new LocalStrategy({passReqToCallback: true,},function (req, username, password, done) {
+    // check in mongo if a user with username exists or not
+    User.findOne({ public: { email:  username } }, function (err, user) {
+      // In case of any error, return using the done method
+      if (err) return done(err);
+      // Username does not exist, log the error and redirect back
+      if (!user) {
+        console.log('User Not Found with username ' + username);
+        return done(null, false);
+      }
+      // User exists but wrong password, log the error
+      if (!isValidPassword(user, password)) {
+        console.log('Invalid Password');
+        return done(null, false); // redirect back to login page
+      }
+      // User and password both match, return user from done method
+      // which will be treated like success
+      return done(null, user);
+    });
+  }));
 
   passport.use('signup', new LocalStrategy({
-    passReqToCallback: true, //allows us to pass back the entire request to the callback
-  },
-    function (req, username, password, done) {
-      // find a user in mongo with provided username
-      User.findOne({ profile: { email:  username } }, function (err, user) {
-        // In case of any error, return using the done method
-        if (err) {
-          console.log('Error in SignUp: ' + err);
-          return done(err);
-        }
-        // already exists
-        if (user) {
-          console.log('User already exists with username: ' + email);
-          return done(null, false);
-        } else {
-          // if there is no user, create the user
-          var newUser = new User();
-          // set the user's local credentials
-          newUser.public.email = username;
-          newUser.private.password = createHash(password);
-          newUser.private.role = 0;
-          // save the us1er
-          newUser.save(function (err) {
-            if (err) {
-              console.log('Error in Saving user: ' + err);
-              return done(err);
-            }
-            return done(null, newUser);
-          });
-        }
-      });
+    passReqToCallback: true,},function (req, username, password, done) {
+    const functionName = 'signup'; 
+    var promise = User.findOne({ profile: { email:  username }}).exec();
+    promise.then(function(newUser) {
+      if (!newUser) {
+        logger.log('info', fileName, functionName, 'User already exists!');
+        return done(null, false);
+      } 
+      logger.log('info', fileName, functionname, 'newUser data:{' + newUser + '}');
+      // set the user's local credentials
+      newUser.public.email = username;
+      newUser.private.password = createHash(password);
+      newUser.private.role = 'member';
+      return newUser.save();
     })
-  );
+    .then(function(newUser){
+      logger.log('info', fileName, functionname, 'NEW username:' + newUser.public.email);
+      logger.log('info', fileName, functionname, 'NEW role:' + newUser.private.role);
+      return done(null, newUser);
+    })
+    .catch(function(err){
+      logger.log('error', fileName, functionname, err);
+      return done(err);
+    });
+  }));
 
   // Checking if password is correct
   var isValidPassword = function (user, password) {

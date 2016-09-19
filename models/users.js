@@ -13,7 +13,7 @@ var user = new Schema({
     },
     company:{
       type: String,
-      required: true,
+      required: false,
       minLength: 2,
       maxLength: 32,
       validate: /[A-Za-z0-9@.]/,
@@ -21,7 +21,7 @@ var user = new Schema({
     },
     type:{
     	type: String, 
-    	required: true,
+    	required: false,
     	enum : [ 'company', 'freelancer'],  
     },
     // Connect gvatar, an npm module to do that!

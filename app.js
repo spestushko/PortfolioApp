@@ -9,14 +9,9 @@ var bodyParser = require('body-parser');
 var session  = require('express-session');
 var passport = require('passport');
 
-// Initizlize Passport
-// ============================================================= 
-var initPassport = require('./passport-init');
-initPassport(passport);
-
 // Initizlize mongoose and it's schemas
 // ============================================================= 
-require('./models/users');
+require('./models/users.js');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1/PortfolioApp');
 var dbConn = mongoose.connection;
@@ -25,15 +20,43 @@ dbConn.once('open', function(callback){
   console.log('=== connection to mongodb established ===');
 });
 
+// Initizlize utilities used by application
+// ============================================================= 
+var logger = require('util/logger/logger');
+if (typeof logger == 'undefined') console.log('Logger module is loaded');
+else console.log('Error loading logger module');
+
 // Initizlize backend routes for the application
 // ============================================================= 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var auth   = require('./routes/api/auth/auth')(passport);
+var auth = require('./routes/api/auth/auth')(passport);
+if (routes) console.log('[app.js] - routes - Route initialized');
+else console.log('[app.js] - routes - Route NOT initialized');
+if (users) console.log('[app.js] - users - Route initialized');
+else console.log('[app.js] - users - Route NOT initialized');
+if (auth) console.log('[app.js] - auth - Route initialized');
+else console.log('[app.js] - auth - Route NOT initialized');
 
 // Initialize the express application
 // ============================================================= 
 var app = express();
+
+// Session configuration
+// ============================================================= 
+app.use(session({
+  name: 'Session',
+  proxy: true,
+  resave: true,
+  saveUninitialized: true,
+  secret: 'eg[isfd-8yF9-7w2315df{}+Ijsli;;to8',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+  httpOnly: true,
+  secure: true,
+  ephemeral: true,
+  //store: sessionStore, // connect-mongo session store ?? what about it ??
+}));
 
 // View engine setup
 // ============================================================= 
@@ -45,15 +68,26 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: 524288000 }));
+app.use(bodyParser.urlencoded(({ limit: 524288000, extended: true })));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Initiate passport
+// ============================================================= 
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Associate routes with url paths
 // ============================================================= 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/auth', auth);
+
+// Initizlize Passport
+// ============================================================= 
+var initPassport = require('./passport-init');
+initPassport(passport);
 
 // Catch 404 and forward to error handler
 // ============================================================= 
