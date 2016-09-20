@@ -17,7 +17,7 @@ var user = new Schema({
       minLength: 2,
       maxLength: 32,
       validate: /[A-Za-z0-9@.]/,
-      unique: true,
+      unique: false,
     },
     type:{
     	type: String, 
@@ -36,7 +36,7 @@ var user = new Schema({
       type: String,
       required: true,
       minLength: 6,
-      maxLength: 32,
+      maxLength: 128,
     },
     role:{
       type: String,

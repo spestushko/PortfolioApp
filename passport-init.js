@@ -5,6 +5,7 @@ mongoose.Promise = require('bluebird');
 mongoose.Promise = require('q').Promise;
 // native promises
 mongoose.Promise = global.Promise;
+var inspect = require('eyes').inspector({styles: {all: 'magenta'}});
 
 var User = mongoose.model('User');
 var LocalStrategy = require('passport-local').Strategy;
@@ -55,26 +56,25 @@ module.exports = function (passport) {
     log.out('info', fileName, functionName, 'function call init');
     User.findOne({ public: { email: username }}).exec()
     .then(function(user) {
-      log.out('info', fileName, functionName, 'Promise returned:'+user);
+      log.out('info', fileName, functionName, 'Promise returned');
       if (user != null) {
         log.out('warn', fileName, functionName, 'User already exists: '+user.email);
         return done(null, false);
-      } else {
-        log.out('info', fileName, functionname, 'Creating new user');
-        var newUser = new User();
-        newUser.public.email = username;
-        newUser.private.password = createHash(password);
-        newUser.private.role = 'member';
-        return newUser.save();
-      }  
+      }
+      var newUser = new User();
+      newUser.public.email = username;
+      newUser.private.password = createHash(password);
+      newUser.private.role = 'member';
+      log.out('info', fileName, functionName, 'Call to save document');
+      return newUser.save();
     })
-    .then(function(newUser){
-      log.out('info', fileName, functionname, 'NEW username:' + newUser.public.email);
-      log.out('info', fileName, functionname, 'NEW role:' + newUser.private.role);
-      return done(null, newUser);
+    .then(function(user){
+      log.out('info', fileName, functionName, 'NEW username:' + user.public.email);
+      log.out('info', fileName, functionName, 'NEW role:' + user.private.role);
+      return done(null, user);
     })
     .catch(function(err){
-      log.out('error', fileName, functionname, err);
+      log.out('error', fileName, functionName, err.reason);
       return done(err);
     });
   }));
