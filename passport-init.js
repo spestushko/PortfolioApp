@@ -57,24 +57,27 @@ module.exports = function (passport) {
     User.findOne({ public: { email: username }}).exec()
     .then(function(user) {
       log.out('info', fileName, functionName, 'Promise returned');
-      if (user != null) {
-        log.out('warn', fileName, functionName, 'User already exists: '+user.email);
-        return done(null, false);
+      if (user != null && user != undefined) {
+        log.out('warn', fileName, functionName, 'User already exists: '+user.public.email);
+      } else {
+        var newUser = new User();
+        newUser.public.email = username;
+        newUser.private.password = createHash(password);
+        newUser.private.role = 'member';
+        log.out('info', fileName, functionName, 'Call to save document');
+        return newUser.save();
       }
-      var newUser = new User();
-      newUser.public.email = username;
-      newUser.private.password = createHash(password);
-      newUser.private.role = 'member';
-      log.out('info', fileName, functionName, 'Call to save document');
-      return newUser.save();
     })
     .then(function(user){
-      log.out('info', fileName, functionName, 'NEW username:' + user.public.email);
-      log.out('info', fileName, functionName, 'NEW role:' + user.private.role);
-      return done(null, user);
+      if (user != null && user != undefined) {
+        log.out('info', fileName, functionName, 'NEW username:' + user.public.email);
+        log.out('info', fileName, functionName, 'NEW role:' + user.private.role);
+        return done(null, user);
+      }  
     })
     .catch(function(err){
-      log.out('error', fileName, functionName, err.reason);
+      console.log(err);
+      log.out('error', fileName, functionName, err);
       return done(err);
     });
   }));
