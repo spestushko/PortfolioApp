@@ -26,7 +26,8 @@
   <script src="components/login/loginController.js"></script>
   <script src="components/signup/signupController.js"></script>
   <script src="components/contact/contactController.js"></script>
-
+  <!-- Including reusable services to be used by app -->
+  <script src="components/services/session/SessionServices.js"></script>
   <!-- Bootstrap core CSS
   ================================================== -->
   <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet">
@@ -73,8 +74,10 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><a href="#login">Sign in</a></li>
-              <li><a href="#signup">Sign up</a></li>
+              <li><a href="#login"  ng-show="!authenticatedUser.authStatus">Sign in</a></li>
+              <li><a href="#signup" ng-show="!authenticatedUser.authStatus">Sign up</a></li>
+              <li><h5 ng-show="authenticatedUser.authStatus">{{authenticatedUser.username}}</h5></li>
+              <li><a href="" ng-show="authenticatedUser.authStatus" ng-click="signUserOut()">Sign out</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
                 <ul class="dropdown-menu">
