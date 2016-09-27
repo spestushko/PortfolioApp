@@ -4,7 +4,7 @@
   "private": true,
   "description": "A MEAN app that allows users to create portfolio of their work",
   "scripts": {
-    "heroku-prebuild":"npm install",
+    "prestart": "npm install express-session",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/www"
   },
