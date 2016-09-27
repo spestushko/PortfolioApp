@@ -6,14 +6,14 @@ mongoose.Promise = require('q').Promise;
 // native promises
 mongoose.Promise = global.Promise;
 var inspect = require('eyes').inspector({styles: {all: 'magenta'}});
-
+// Validator package
+var validator = require('validator');
 var User = mongoose.model('User');
 var LocalStrategy = require('passport-local').Strategy;
 var bCrypt = require('bcrypt-nodejs');
 const fileName = 'passport-init.js';
 
 module.exports = function (passport) {
-
   // Passport needs to be able to serialize and deserialize users to support persistent login sessions
   passport.serializeUser(function (user, done) {
     const functionName = 'passport.serializeUser';
@@ -32,6 +32,16 @@ module.exports = function (passport) {
   passport.use('signin', new LocalStrategy({passReqToCallback: true,},function (req, username, password, done) {
     const functionName = 'passport.signin'; 
     log.out('info', fileName, functionName, 'function call init');
+    // Check if passed email is a valid email address
+    if (validator.isEmail(username) == false) {
+      log.out('error', fileName, functionName, 'Invalid username format:'+username);
+      return done(null, false);
+    }  
+    // Check if password in a correct format
+    if(validator.isAlphanumeric(password) == false) {
+      log.out('error', fileName, functionName, 'Invalid password format');
+      return done(null, false);
+    }
     // check in mongo if a user with username exists or not
     User.findOne({ public: { email:  username }}).exec()
     .then(function(user){
@@ -56,11 +66,22 @@ module.exports = function (passport) {
     passReqToCallback: true,},function (req, username, password, done) {
     const functionName = 'passport.signup'; 
     log.out('info', fileName, functionName, 'function call init');
+    // Check if passed email is a valid email address
+    if (validator.isEmail(username) == false) {
+      log.out('error', fileName, functionName, 'Invalid username format: ' + username);
+      return done(null, false);
+    }  
+    // Check if password in a correct format
+    if(validator.isAlphanumeric(password) == false) {
+      log.out('error', fileName, functionName, 'Invalid password format');
+      return done(null, false);
+    }
     User.findOne({ public: { email: username }}).exec()
     .then(function(user) {
       log.out('info', fileName, functionName, 'Promise returned');
       if (user != null && user != undefined) {
         log.out('warn', fileName, functionName, 'User already exists: '+user.public.email);
+        return done(null, false);
       } else {
         var newUser = new User();
         newUser.public.email = username;

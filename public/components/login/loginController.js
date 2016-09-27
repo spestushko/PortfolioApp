@@ -1,11 +1,16 @@
 // Login controller used for interaction on the login page
 // =============================================================
-app.controller('loginController', function($rootScope, $scope, $http, $location, session){
+app.controller('loginController', function($rootScope, $scope, $http, $location, session, validation){
   console.log('[loginController.js] - loginController - Scope is up');
   $scope.user = {username:'', password:''};
   // Login method
 
   $scope.login = function() {
+    var res = validation.checkLogin($scope.user);
+    if (res.valid == false) {
+      $scope.errorMessage = res.message;
+      return;
+    }
   	$http.post('/auth/signin', $scope.user).success(function(data){
   		if (data.state == 'success') {
         // Public accessible data from the back-end

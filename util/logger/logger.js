@@ -1,4 +1,4 @@
-var debugLevel = 'warn';
+var debugLevel ='error';
 
 /** 
 * Get current time when someone is writing to the log

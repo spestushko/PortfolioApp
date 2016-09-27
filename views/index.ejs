@@ -14,6 +14,7 @@
   <!-- Angular JS
   ================================================== -->
   <!-- Including Angular JS -->
+  <script type="text/javascript" src="validator.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-route.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
@@ -28,6 +29,8 @@
   <script src="components/contact/contactController.js"></script>
   <!-- Including reusable services to be used by app -->
   <script src="components/services/session/SessionServices.js"></script>
+  <script src="components/services/validation/AuthValid.js"></script>
+  
   <!-- Bootstrap core CSS
   ================================================== -->
   <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet">
@@ -35,14 +38,7 @@
   <link href="stylesheets/css/contactTemplate.css" rel="stylesheet">
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <link href="stylesheets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-  <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
   <script src="stylesheets/css/ie-emulation-modes-warning.js"></script>
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
   <!-- Custom styles for this template -->
   <link href="stylesheets/css/carousel.css" rel="stylesheet">
 
@@ -74,10 +70,6 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><a href="#login"  ng-show="!authenticatedUser.authStatus">Sign in</a></li>
-              <li><a href="#signup" ng-show="!authenticatedUser.authStatus">Sign up</a></li>
-              <li><h5 ng-show="authenticatedUser.authStatus">{{authenticatedUser.username}}</h5></li>
-              <li><a href="" ng-show="authenticatedUser.authStatus" ng-click="signUserOut()">Sign out</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -89,6 +81,12 @@
                   -->
                 </ul>
               </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#login" class="glyphicon glyphicon-log-in" ng-show="!authenticatedUser.authStatus"> Signin</a></li>
+              <li><a href="#signup" class="glyphicon glyphicon-user" ng-show="!authenticatedUser.authStatus"> Signup</a></li>
+              <li> <a href="#profile" class="glyphicon glyphicon-user" ng-show="authenticatedUser.authStatus">{{authenticatedUser.username}}</a></li>
+              <li><a href="" class="glyphicon glyphicon-modal-window authenticatedUser.authStatus" ng-show="authenticatedUser.authStatus" ng-click="signUserOut()"> Signout</a></li>
             </ul>
           </div>
         </div>

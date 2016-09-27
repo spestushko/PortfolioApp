@@ -1,14 +1,17 @@
 // Signup controller used for interaction on the signup page
 // =============================================================
-app.controller('signupController', function($rootScope, $scope, $http, $location, session){
+app.controller('signupController', function($rootScope, $scope, $http, $location, session, validation){
   console.log('[signupController.js] - signupController - Scope is up');
   $scope.user = { username: '', password: '' };
   $scope.errorMessage = '';
   // Signup method
   $scope.signup = function(){
-  	console.log('User to be created');
-    console.log('User data:'+$scope.user);
-  	$http.post('/auth/signup', $scope.user).success(function(data) {
+    var res = validation.checkSignup($scope.user, $scope.test_user.repassword);
+    if (res.valid == false) {
+      $scope.errorMessage = res.message;
+      return;
+    }
+    $http.post('/auth/signup', $scope.user).success(function(data) {
   	  if (data.state == 'success') {
   	  	// Public accessible data from the back-end
         $rootScope.authenticatedUser.username = data.user.public.email;

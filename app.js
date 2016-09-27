@@ -124,4 +124,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// Export app varable as an indication of server startup
+// ============================================================= 
+log.out('info', fileName, functionName, 'Exporting app - Server started');
 module.exports = app;

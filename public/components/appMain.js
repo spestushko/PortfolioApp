@@ -1,4 +1,5 @@
-var app = angular.module('PortfolioApp', ['route']).run(function($rootScope, $location, $http, signout, session) {
+var app = angular.module('PortfolioApp', ['route']).run(function($rootScope, $location, $http, signout, 
+                                                                  session, validation) {
   console.log('[appMain.js] - Main module - Application initialized');
 
   // Document representing the authenticated user 

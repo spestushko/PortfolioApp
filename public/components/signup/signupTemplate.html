@@ -3,9 +3,25 @@
   <form class="form-signin" ng-submit="submit()">
 		<h1 class="form-signin-heading text-muted	">Sign Up</h1>
 		<h4 style="color:red;">{{errorMessage}}</h4>
-		<input ng-model="user.username" type="text" class="form-control" placeholder="Email address" required="" autofocus="true">
-		<input ng-model="user.password" type="password" class="form-control" placeholder="Password" required="">
-		<input ng-model="test_user.repassword" type="password" class="form-control" placeholder="Confirm Password" required="">
+		<input required="true" 
+					 ng-model="user.username" 
+					 type="text" 
+					 class="form-control" 
+					 placeholder="Email address" 
+					 required="" 
+					 autofocus="true">
+		<input required="true" 
+				   ng-model="user.password" 
+				   type="password" 
+				   class="form-control" 
+				   placeholder="Password" 
+				   required="">
+		<input required="true" 
+					 ng-model="test_user.repassword" 
+					 type="password" 
+					 class="form-control" 
+					 placeholder="Confirm Password" 
+					 required="">
 		<button class="btn btn-lg btn-primary btn-block" ng-click="signup()">
 			Sign Up
 		</button>
