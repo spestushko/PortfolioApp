@@ -21,6 +21,10 @@
     "serve-favicon": "~2.3.0", 
     "passport":"latest",
     "express-session":"latest",
-    "mongoose":"latest"
+    "mongoose":"latest", 
+    "q":"latest",
+    "bluebird":"latest",
+    "eyes":"latest",
+    "validator":"latest"
   }
 }
