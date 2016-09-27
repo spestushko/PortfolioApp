@@ -25,6 +25,8 @@
     "q":"latest",
     "bluebird":"latest",
     "eyes":"latest",
-    "validator":"latest"
+    "validator":"latest", 
+    "passport-local":"latest",
+    "bcrypt-nodejs":"latest"
   }
 }
