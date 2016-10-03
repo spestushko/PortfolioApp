@@ -16,6 +16,11 @@ route.config(function ($routeProvider, $locationProvider) {
       controller: 'signupController',
       requireLogin: false,
     })
+    .when('/profile', {
+      templateUrl: 'components/profile/profileTemplate.html',
+      controller: 'profileController',
+      requireLogin: false,
+    })
     /*
     .when('/about', {
       templateUrl: 'components/about/aboutTemplate.html',
