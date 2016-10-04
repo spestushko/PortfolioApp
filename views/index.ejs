@@ -38,6 +38,7 @@
   <link href="stylesheets/css/loginTemplate.css" rel="stylesheet">
   <link href="stylesheets/css/contactTemplate.css" rel="stylesheet">
   <link href="stylesheets/css/profileTemplate.css" rel="stylesheet">
+  <link href="stylesheets/css/bootstrapCustom.css" rel="stylesheet">
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <link href="stylesheets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
   <script src="stylesheets/css/ie-emulation-modes-warning.js"></script>
@@ -57,10 +58,8 @@
 
   <!-- Navbar HTML 
   ================================================== -->
-  <div class="navbar-wrapper">
-    <div class="container">
-      <nav class="navbar navbar-inverse navbar-static-top">
-        <div class="container">
+  <div class="navbar-wrapper" >
+      <nav class="navbar navbar-inverse" role="navigation">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-  expanded="false" aria-controls="navbar">
               <span class="sr-only">Toggle navigation</span>
@@ -91,9 +90,7 @@
               <li><a href="" class="glyphicon glyphicon-modal-window authenticatedUser.authStatus" ng-show="authenticatedUser.authStatus" ng-click="signUserOut()"> Signout</a></li>
             </ul>
           </div>
-        </div>
       </nav>
-    </div>
   </div>
 </head>
 
